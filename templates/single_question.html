@@ -1,0 +1,75 @@
+
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+        {%block content%}
+    <section class="col"">
+        {% include 'layouts/question.html' with question=question show_full_text=True %}
+
+        <hr class="me-3 h-100">
+
+        <article class="mt-5">
+
+            {% for answer in answers %}
+<div class="card mb-3 me-3 border-1">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-2">
+                <div style="height: 100px;" class="ps-3">
+                    <img src="{% static 'images/avatar.png' %}" class="rounded-circle answer-avatar img-fluid" alt="img">
+                </div>
+                <div class="d-flex gap-2 ps-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <button class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-emoji-smile text-success"></i>
+                        </button>
+                        <span class="mt-1">{{ answer.likes }}</span> 
+                    </div>
+                    <div class="d-flex flex-column align-items-center">
+                        <button class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-emoji-angry text-danger"></i>
+                        </button>
+                        <span class="mt-1">{{ answer.dislikes }}</span> 
+                    </div>
+                </div>
+            </div>
+            <div class="col d-flex flex-column justify-content-between">
+                <div>
+                    <p class="card-text fs-6 mt-2">
+                        {{ answer.text }}
+                    </p>
+                </div>
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" 
+                           id="correctCheckbox{{ answer.id }}" 
+                           {% if answer.is_correct %}checked{% endif %} disabled>
+                    <label class="form-check-label" for="correctCheckbox{{ answer.id }}">
+                        Правильный ответ
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+        </article>
+
+        <hr class="me-3 h-100">
+
+        <div class="card mb-3 me-3 border-0">
+            <div class="card-body p-2">
+                <form method="POST" action="{% url 'answer_submit' question.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <textarea class="form-control" id="commentTextarea" rows="3" placeholder="Enter your answer here"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary bg-success">Answer</button>
+                </form>
+            </div>
+        </div>
+
+     {%include "layouts/pagination.html"%}
+    </section>
+{%endblock%}

@@ -1,0 +1,39 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+    {%block content%}
+                <section>
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <h1>
+                            New Question 
+                        </h1>
+                        </div>
+            <div class="card me-3 mb-3">
+            <div class="card-body">
+                <form method="POST" action="{% url 'ask_submit'%}"">
+                    {% csrf_token %}
+                    <div class="form-group ">
+                        
+                        <input type="text" class="form-control" name="title" id="questionTitle" placeholder="Title" maxlength="100" required>
+                        <small class="form-text text-muted">Maximum number of characters - 100.</small>
+                        <div class="invalid-feedback">Enter the title</div>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea class="form-control mt-3" name="text" id="questionText" rows="3" placeholder="Text" maxlength="1000" required></textarea>
+                        <small class="form-text text-muted">Maximum number of characters - 1000.</small>
+                        <div class="invalid-feedback">Enter the text</div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control mt-3" name="tags" id="questionTags" placeholder="Tags" maxlength="100">
+                        <small class="form-text text-muted">Maximum number of characters - 100.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-success mt-4">ASK!</button>
+                </form>
+            </div>
+        </div>
+        </section>
+    {%endblock%}
+ 

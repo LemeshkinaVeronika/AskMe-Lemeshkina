@@ -1,0 +1,51 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="auth-form">
+    <h2 class="mb-4">{{ form_title }}</h2>
+    <form method="POST" action="{{ form_action }}">
+        {% csrf_token %}
+    <div class="ms-3">
+        {% include 'layouts/form.html' %}
+        
+        {% if show_password %}
+        <div class="mb-3 row">
+            <label for="password" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control w-50" id="password" name="password" placeholder="Enter your password">
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if show_repeat_password %}
+        <div class="mb-3 row">
+            <label for="repeatPassword" class="col-sm-2 col-form-label">Repeat password</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control w-50" id="repeatPassword" name="repeatPassword" placeholder="Repeat your password">
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if show_avatar_upload %}
+        <div class="mb-3 row pt-3">
+            <label for="avatarUpload" class="col-sm-2 col-form-label">Upload Avatar</label>
+            <div class="col-sm-10">
+                <input type="file" class="form-control w-50 mb-2" id="avatarUpload" name="avatar" accept="image/*">
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="text-center pt-3 pb-3">
+            <button type="submit" class="btn btn-outline-success">{{ submit_button_text }}</button>
+        </div>
+        
+        {% if show_create_account_link %}
+        <div class="pb-3 text-center">
+            <a href="{% url 'signup' %}" class="custom-link">Create new account</a>
+        </div>
+        {% endif %}
+    </div>
+    </form>
+</div>
+{% endblock %}

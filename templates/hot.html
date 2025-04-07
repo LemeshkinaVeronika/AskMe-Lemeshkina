@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+        {%block content%}
+                <section class="col vh-150">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <h1>
+                            Hot Questions  
+                            <i class="bi bi-fire text-custom"></i>
+                        </h1>
+                        <a href="{%url 'index'%}" class="custom-link ps-1 fs-4 ">| New Questions</a>
+                        
+                    </div>
+
+                    <article class="d-flex gap-3 flex-column">
+
+                        {%for question in questions %}
+                        {% include 'layouts/question.html' %}
+                        {%endfor%}
+                        {% include 'layouts/pagination.html' %}
+
+                    </article>
+                </section>
+    {%endblock%}
+            
+           

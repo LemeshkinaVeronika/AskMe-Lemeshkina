@@ -1,0 +1,8 @@
+{% extends 'layouts/auth_form.html' %}
+
+{% block content %}
+{% url 'login_submit' as form_action_url %}
+    {% with form_title="Log In" submit_button_text="Log In!" form_action=form_action_url show_password=True show_create_account_link=True error_message="Sorry, wrong password!"%}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}

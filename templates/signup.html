@@ -1,0 +1,9 @@
+{% extends 'layouts/auth_form.html' %}
+{% load static %}
+
+{% block content %}
+    {% url 'signup_submit' as form_action_url %}
+    {% with form_title="Registration" submit_button_text="Register!" form_action=form_action_url show_email=True show_nickname=True show_password=True show_repeat_password=True show_avatar_upload=True error_message="Sorry, this email adress already registred!"%}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
