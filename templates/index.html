@@ -14,7 +14,7 @@
                     <article class="d-flex gap-3 flex-column">
 
                         {%for question in questions %}
-                        {% include 'layouts/question.html' %}
+                        {% include 'layouts/question.html' with question=question %}
                         {%endfor%}
                         {% include 'layouts/pagination.html' %}
 

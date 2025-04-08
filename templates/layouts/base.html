@@ -1,4 +1,4 @@
-{%load static%}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +15,7 @@
         <div class="container-fluid custom-container">
 
             <div class="d-flex align-items-center">
-                <a class="navbar-brand me-4 fs-3" href="{%url "index" %}">Ask&Run</a>
+                <a class="navbar-brand me-4 fs-3" href="{% url 'index' %}">Ask&Run</a>
                 <form class="input-group">
                     <input
                         class="form-control me-sm-2 pe-1"
@@ -29,27 +29,28 @@
                 </form>
             </div>
 
-            {% if is_authenticated %}
+            {% if user.is_authenticated %}
             <div class="d-flex gap-2 align-items-center">
-                <a href="{%url 'ask'%}" class="btn btn-success btn-lg me-5">ASK!</a>
+                <a href="{% url 'ask' %}" class="btn btn-success btn-lg me-5">ASK!</a>
                 
                 <div class="d-flex gap-4 align-items-center profile ms-5">
                 <div>
-                    <img src="{% static 'images/avatar.png'%}" class="rounded-circle avatar" alt="...">
+                    <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'images/avatar.png' %}{% endif %}" 
+                         class="rounded-circle avatar" alt="Profile avatar">
                 </div>
                 <div class="content text-white">
-                    <div class="content__name fs-5">Dr. Beber</div>
+                    <div class="content__name fs-5">{{ user.username }}</div>
                     <div class="content__links">
-                        <a href="{%url "settings"%}" class="me-2 custom-link">Settings</a>
-                        <a href="#" class= "custom-link">Log out</a>
+                        <a href="{% url 'settings' %}" class="me-2 custom-link">Settings</a>
+                        <a href="{% url 'logout' %}" class="custom-link">Log out</a>
                     </div>
                 </div>
             </div>
             {% else %}
             <!-- Для неавторизированных  -->
             <div class="d-flex gap-2 ms-5">
-                <a href="{%url "login"%}" class="btn btn-outline-light">Log in</a>
-                <a href="{%url "signup"%}" class="btn btn-primary">Sign up</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-light">Log in</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary">Sign up</a>
             </div>
             {% endif %}
             </div>
@@ -60,33 +61,34 @@
         <div class="d-flex gap-5">
             <div class="col mt-3 mb-4 ps-3 pt-3 bg-custom-el rounded-3">
                 {% block content %}
-                {% endblock  %}
+                {% endblock %}
             </div>
     
-            <aside class="col-3 mt-3 ps-3 bg-custom-el rounded-3 align-self-start ">
+            <aside class="col-3 mt-3 ps-3 bg-custom-el rounded-3 align-self-start">
                 <section class="mb-3">
-                    <h3 class="mt-3">Popular tags</h3>
+                    <h3 class="mt-3">Popular Tags</h3>
                     <div>
-                        <a href="{% url 'tag' tag_name='Primary' %}" class="tag tag-primary">Primary</a>
-                        <a href="{% url 'tag' tag_name='Secondary' %}" class="tag tag-secondary">Secondary</a>
-                        <a href="{% url 'tag' tag_name='Warning' %}" class="tag tag-warning">Warning</a>
-                        <a href="{% url 'tag' tag_name='Success' %}" class="tag tag-success">Success</a>
-                        <a href="{% url 'tag' tag_name='Danger' %}" class="tag tag-danger">Danger</a>
-                        <a href="{% url 'tag' tag_name='Info' %}" class="tag tag-info">Info</a>
-                        <a href="{% url 'tag' tag_name='Dark' %}" class="tag tag-dark">Light</a>
+                        {% for tag in popular_tags %}
+                            {% with tag_theme=forloop.counter0|stringformat:"s"|slice:":1" %}
+                                <a href="{% url 'tag' tag_name=tag.name %}" 
+                                   class="tag tag-{% cycle 'primary' 'secondary' 'success' 'danger' 'warning' 'info' 'dark' %}">
+                                   {{ tag.name }}
+                                </a>
+                            {% endwith %}
+                        {% empty %}
+                            <div class="text-muted">No tags yet</div>
+                        {% endfor %}
                     </div>
                 </section>
     
                 <section class="pb-4">
-                    <h3 class="">Best members</h3>
+                    <h3>Best Members</h3>
                     <div>
-                        <a class="d-block pb-1 custom-link " href="#">Member</a>
-                        <a class="d-block pb-1 custom-link " href="#">Member</a>
-                        <a class="d-block pb-1 custom-link " href="#">Member</a>
-                        <a class="d-block pb-1 custom-link " href="#">Member</a>
-                        <a class="d-block pb-1 custom-link " href="#">Member</a>
-                        <a class="d-block pb-1 custom-link " href="#">Member</a>
-                        <a class="d-block pb-1 custom-link " href="#">Member</a>
+                        {% for member in best_members %}
+                            <a class="d-block pb-1 custom-link" href="#">{{ member.user.username }}</a>
+                        {% empty %}
+                            <div class="text-muted">No members yet</div>
+                        {% endfor %}
                     </div>
                 </section>
             </aside>

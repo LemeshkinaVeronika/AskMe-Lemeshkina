@@ -1,24 +1,20 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-        {%block content%}
-                <section class="col vh-150">
-                    <div class="d-flex align-items-center gap-2 mb-4">
-                        <h1>
-                            Tag: {{tag}}
-                        </h1>
-                    </div>
+{% block content %}
+<section class="col vh-150">
+    <div class="d-flex align-items-center gap-2 mb-4">
+        <h1>Tag: {{ tag.name }}</h1>
+    </div>
 
-                    <article class="d-flex gap-3 flex-column">
-
-                        {%for question in questions %}
-                        {% include 'layouts/question.html' %}
-                        {% empty %}
-                            <div class="alert alert-info">No questions found with this tag.</div>
-                        {%endfor%}
-    
-                        {% include 'layouts/pagination.html' %}
-
-                    </article>
-                </section>
-    {%endblock%}
+    <article class="d-flex gap-3 flex-column">
+        {% for question in questions %}
+            {% include 'layouts/question.html' with question=question %}
+        {% empty %}
+            <div class="alert alert-info">No questions found with this tag.</div>
+        {% endfor %}
+        
+        {% include 'layouts/pagination.html' %}
+    </article>
+</section>
+{% endblock %}

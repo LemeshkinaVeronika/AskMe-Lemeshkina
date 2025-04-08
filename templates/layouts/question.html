@@ -5,20 +5,21 @@
         <div class="row">
             <div class="col-2">
                 <div style="height: 100px;" class="mb-2 {% if not centered %}ps-3{% endif %}">
-                    <img src="{% static 'images/avatar.png' %}" class="rounded-circle {% if answer %}answer-avatar{% else %}user-avatar{% endif %} img-fluid" alt="img">
+                    <img src="{% if question.author.avatar %}{{ question.author.avatar.url }}{% else %}{% static 'images/avatar.png' %}{% endif %}" 
+                         class="rounded-circle {% if answer %}answer-avatar{% else %}user-avatar{% endif %} img-fluid" alt="img">
                 </div>
                 <div class="d-flex gap-2 {% if not centered %}ps-4{% else %}ps-2{% endif %} pt-3">
                     <div class="d-flex flex-column align-items-center">
                         <button class="btn {% if small %}btn-sm{% endif %} btn-outline-success">
                             <i class="bi bi-emoji-smile text-success"></i>
                         </button>
-                        <span id="likeCount" class="mt-1">{{ question.likes|default:3 }}</span> 
+                        <span id="likeCount" class="mt-1">{{ question.total_likes }}</span>
                     </div>
                     <div class="d-flex flex-column align-items-center">
                         <button class="btn {% if small %}btn-sm{% endif %} btn-outline-danger">
                             <i class="bi bi-emoji-angry text-danger"></i>
                         </button>
-                        <span id="dislikeCount" class="mt-1">{{ question.dislikes|default:100 }}</span> 
+                        <span id="dislikeCount" class="mt-1">{{ question.total_dislikes }}</span>
                     </div>
                 </div>
             </div>
@@ -43,16 +44,16 @@
                 <div class="row mt-3">
                     <div class="col">
                         {% if not single_page %}
-                            <a href="{% url 'question' question.id %}" class="custom-link">Answers ({{ question.answers_count|default:3 }})</a>
+                            <a href="{% url 'question' question.id %}" class="custom-link">Answers ({{ question.answers_count }})</a>
                         {% endif %}
                     </div>
                     <div class="col d-flex justify-content-end align-items-center me-1">
                         <span class="fs-6 me-2">Tags:</span>
                         <div class="d-flex gap-2">
-                            {% for tag in question.tags %}
-                                <a href="{% url 'tag' tag_name=tag %}" 
-                                   class="custom-tag-link text-{{ tag|lower }} fs-6">
-                                    {{ tag }}
+                            {% for tag in question.tags.all %}
+                                <a href="{% url 'tag' tag_name=tag.name %}" 
+                                   class="custom-tag-link text-{{ tag.name|lower }} fs-6">
+                                    {{ tag.name }}
                                 </a>
                             {% endfor %}
                         </div>
