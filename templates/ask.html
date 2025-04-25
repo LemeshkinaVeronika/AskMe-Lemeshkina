@@ -1,39 +1,66 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-    {%block content%}
-                <section>
-                    <div class="d-flex align-items-center gap-2 mb-4">
-                        <h1>
-                            New Question 
-                        </h1>
+{% block content %}
+<section>
+    <div class="d-flex align-items-center gap-2 mb-4">
+        <h1>New Question</h1>
+    </div>
+    <div class="card me-3 mb-3">
+        <div class="card-body">
+            <form method="POST" action="{% url 'ask' %}">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <div class="form-group mb-3">
+                    <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.title.errors %}
+                                {{ error }}
+                            {% endfor %}
                         </div>
-            <div class="card me-3 mb-3">
-            <div class="card-body">
-                <form method="POST" action="{% url 'ask_submit'%}"">
-                    {% csrf_token %}
-                    <div class="form-group ">
-                        
-                        <input type="text" class="form-control" name="title" id="questionTitle" placeholder="Title" maxlength="100" required>
-                        <small class="form-text text-muted">Maximum number of characters - 100.</small>
-                        <div class="invalid-feedback">Enter the title</div>
-                    </div>
+                    {% endif %}
+                    <small class="form-text text-muted">{{ form.title.help_text }}</small>
+                </div>
 
-                    <div class="form-group">
-                        <textarea class="form-control mt-3" name="text" id="questionText" rows="3" placeholder="Text" maxlength="1000" required></textarea>
-                        <small class="form-text text-muted">Maximum number of characters - 1000.</small>
-                        <div class="invalid-feedback">Enter the text</div>
-                    </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.text.id_for_label }}" class="form-label">{{ form.text.label }}</label>
+                    {{ form.text }}
+                    {% if form.text.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.text.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <small class="form-text text-muted">{{ form.text.help_text }}</small>
+                </div>
 
-                    <div class="form-group">
-                        <input type="text" class="form-control mt-3" name="tags" id="questionTags" placeholder="Tags" maxlength="100">
-                        <small class="form-text text-muted">Maximum number of characters - 100.</small>
-                    </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.tags.id_for_label }}" class="form-label">Tags</label>
+                    {{ form.tags }}
+                    {% if form.tags.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.tags.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <small class="form-text text-muted">{{ form.tags.help_text }}</small>
+                </div>
 
-                    <button type="submit" class="btn btn-outline-success mt-4">ASK!</button>
-                </form>
-            </div>
+                <button type="submit" class="btn btn-outline-success mt-4">ASK!</button>
+            </form>
         </div>
-        </section>
-    {%endblock%}
- 
+    </div>
+</section>
+{% endblock %}

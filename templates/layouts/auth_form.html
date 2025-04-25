@@ -4,48 +4,95 @@
 {% block content %}
 <div class="auth-form">
     <h2 class="mb-4">{{ form_title }}</h2>
-    <form method="POST" action="{{ form_action }}">
-        {% csrf_token %}
-    <div class="ms-3">
-        {% include 'layouts/form.html' %}
-        
-        {% if show_password %}
-        <div class="mb-3 row">
-            <label for="password" class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control w-50" id="password" name="password" placeholder="Enter your password">
-            </div>
-        </div>
-        {% endif %}
-        
-        {% if show_repeat_password %}
-        <div class="mb-3 row">
-            <label for="repeatPassword" class="col-sm-2 col-form-label">Repeat password</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control w-50" id="repeatPassword" name="repeatPassword" placeholder="Repeat your password">
-            </div>
-        </div>
-        {% endif %}
-        
-        {% if show_avatar_upload %}
-        <div class="mb-3 row pt-3">
-            <label for="avatarUpload" class="col-sm-2 col-form-label">Upload Avatar</label>
-            <div class="col-sm-10">
-                <input type="file" class="form-control w-50 mb-2" id="avatarUpload" name="avatar" accept="image/*">
-            </div>
-        </div>
-        {% endif %}
-        
-        <div class="text-center pt-3 pb-3">
-            <button type="submit" class="btn btn-outline-success">{{ submit_button_text }}</button>
-        </div>
-        
-        {% if show_create_account_link %}
-        <div class="pb-3 text-center">
-            <a href="{% url 'signup' %}" class="custom-link">Create new account</a>
-        </div>
-        {% endif %}
+    
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger w-75 mx-auto">
+        {% for error in form.non_field_errors %}
+            {{ error }}
+        {% endfor %}
     </div>
+    {% endif %}
+    
+    <form method="POST" action="{{ form_action }}"{% if form.avatar %} enctype="multipart/form-data"{% endif %}>
+        {% csrf_token %}
+        <div class="ms-3">
+            {% for field in form %}
+                {% if field.name != 'password1' and field.name != 'password2' and field.name != 'avatar' %}
+                <div class="mb-3 row">
+                    {{ field.label_tag }}
+                    <div class="col-sm-10">
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ field.errors.0 }}
+                        </div>
+                        {% endif %}
+                        {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+            
+            {% if form.password1 %}
+            <div class="mb-3 row">
+                {{ form.password1.label_tag }}
+                <div class="col-sm-10">
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.password1.errors.0 }}
+                    </div>
+                    {% endif %}
+                    {% if form.password1.help_text %}
+                    <small class="form-text text-muted">{{ form.password1.help_text }}</small>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if form.password2 %}
+            <div class="mb-3 row">
+                {{ form.password2.label_tag }}
+                <div class="col-sm-10">
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.password2.errors.0 }}
+                    </div>
+                    {% endif %}
+                    {% if form.password2.help_text %}
+                    <small class="form-text text-muted">{{ form.password2.help_text }}</small>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if form.avatar %}
+            <div class="mb-3 row">
+                {{ form.avatar.label_tag }}
+                <div class="col-sm-10">
+                    {{ form.avatar }}
+                    {% if form.avatar.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.avatar.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="text-center pt-3 pb-3">
+                <button type="submit" class="btn btn-outline-success">{{ submit_button_text }}</button>
+            </div>
+            
+            {% if show_create_account_link %}
+            <div class="pb-3 text-center">
+                <a href="{% url 'signup' %}" class="custom-link">Create new account</a>
+            </div>
+            {% endif %}
+        </div>
     </form>
 </div>
 {% endblock %}

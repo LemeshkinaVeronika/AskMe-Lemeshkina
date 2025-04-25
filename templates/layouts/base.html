@@ -39,10 +39,10 @@
                          class="rounded-circle avatar" alt="Profile avatar">
                 </div>
                 <div class="content text-white">
-                    <div class="content__name fs-5">{{ user.username }}</div>
+                    <div class="content__name fe-5">{{ user.username }}</div>
                     <div class="content__links">
                         <a href="{% url 'settings' %}" class="me-2 custom-link">Settings</a>
-                        <a href="#" class="custom-link">Log out</a>
+                        <a href="{% url 'logout' %}" class="custom-link">Log out</a>
                     </div>
                 </div>
             </div>

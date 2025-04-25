@@ -2,7 +2,9 @@
 
 {% block content %}
 {% url 'login_submit' as form_action_url %}
-    {% with form_title="Log In" submit_button_text="Log In!" form_action=form_action_url show_password=True show_create_account_link=True error_message="Sorry, wrong password!"%}
-        {{ block.super }}
-    {% endwith %}
+{% with continue_url=request.GET.continue|default:"index" %}
+{% with form_title="Log In" submit_button_text="Log In!" form_action=form_action_url|add:"?continue="|add:continue_url show_password=True show_create_account_link=True %}
+    {{ block.super }}
+{% endwith %}
+{% endwith %}
 {% endblock %}

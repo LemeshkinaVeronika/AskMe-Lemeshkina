@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -25,12 +27,12 @@ urlpatterns = [
     path('question/<int:question_id>', views.question, name='question'),
     path('tag/<str:tag_name>/', views.tag_questions, name='tag'),
     path('ask', views.ask, name = 'ask'),
-    path('ask/submit/', views.ask_submit, name='ask_submit'),
     path('question/<int:question_id>/answer/', views.answer_submit, name='answer_submit'),
-    path('login', views.login, name = 'login'),
-    path('signup', views.signup, name = 'signup'),
-    path('settings', views.settings, name = 'settings'),
-    path('login/submit/', views.login_submit, name='login_submit'),
-    path('signup/submit/', views.signup_submit, name='signup_submit'),
-    path('settings/submit/', views.settings_submit, name='settings_submit'),
+    path('signup/', views.signup, name='signup'),
+    path('profile/edit/', views.settings, name='settings'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

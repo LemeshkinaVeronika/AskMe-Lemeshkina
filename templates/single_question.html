@@ -9,12 +9,13 @@
     
     <article class="mt-5">
         {% for answer in answers %}
-            <div class="card mb-3 me-3 border-1">
+            <div id="answer-{{ answer.id }}" class="card mb-3 me-3 border-1">
                 <div class="card-body p-2">
                     <div class="row">
                         <div class="col-2">
                             <div style="height: 100px;" class="ps-3">
-                                <img src="{% static 'images/avatar.png' %}" class="rounded-circle answer-avatar img-fluid" alt="img">
+                                <img src="{% if answer.author.avatar %}{{ answer.author.avatar.url }}{% else %}{% static 'images/avatar.png' %}{% endif %}" 
+                                     class="rounded-circle answer-avatar img-fluid" alt="img">
                             </div>
                             <div class="d-flex gap-2 ps-4">
                                 <div class="d-flex flex-column align-items-center">
@@ -42,7 +43,7 @@
                                        id="correctCheckbox{{ answer.id }}" 
                                        {% if answer.is_correct %}checked{% endif %} disabled>
                                 <label class="form-check-label" for="correctCheckbox{{ answer.id }}">
-                                    Правильный ответ
+                                    Right answer
                                 </label>
                             </div>
                         </div>
@@ -54,19 +55,35 @@
         {% endfor %}
     </article>
 
+    {% if user.is_authenticated %}
     <hr class="me-3 h-100">
-
     <div class="card mb-3 me-3 border-0">
         <div class="card-body p-2">
             <form method="POST" action="{% url 'answer_submit' question.id %}">
                 {% csrf_token %}
+                {% if answer_form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in answer_form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <div class="mb-3">
-                    <textarea class="form-control" id="commentTextarea" name="text" rows="3" placeholder="Enter your answer here" required></textarea>
+                    <label for="{{ answer_form.text.id_for_label }}" class="form-label">{{ answer_form.text.label }}</label>
+                    {{ answer_form.text }}
+                    {% if answer_form.text.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in answer_form.text.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
                 <button type="submit" class="btn btn-primary bg-success">Answer</button>
             </form>
         </div>
     </div>
+{% endif %}
 
     {% include "layouts/pagination.html" %}
 </section>

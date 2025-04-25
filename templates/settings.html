@@ -2,25 +2,50 @@
 {% load static %}
 
 {% block content %} 
-<h1 class="mb-4">Settings: Dr. Beber</h1>
+<div class="container">
+    <h1 class="mb-4">Settings: {{ request.user.username }}</h1>
 
-<form method="POST" action="{% url 'settings_submit'%}" class="ms-3">
-    {% csrf_token %}
-    {% include 'layouts/form.html' with show_email=True show_nickname=True %}
-    
-    <div class="mb-3 row">
-        <label for="avatarUpload" class="col-sm-2 col-form-label">Upload Avatar</label>
-        <div class="col-sm-10">
-            <img src="{% static 'images/avatar.png' %}" class="rounded-circle ms-4" alt="Avatar Preview" style="width: 150px; height: 150px; object-fit: cover;">
+    {% if messages %}
+    <div class="w-75 mb-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+        {% endfor %}
     </div>
+    {% endif %}
 
-    <div class="mb-3 row">
-        <div class="col-sm-10 offset-sm-2">
-            <input type="file" class="form-control w-50 mb-2" id="avatarUpload" name="avatar" accept="image/*">
+    <form method="POST" action="{% url 'settings' %}" enctype="multipart/form-data" class="w-75">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+                {{ error }}<br>
+            {% endfor %}
         </div>
-    </div>
-
-    <button type="submit" class="btn btn-outline-success mb-3">Save</button>
-</form>
+        {% endif %}
+        
+        {% include 'layouts/form.html' %}
+        
+        <div class="mb-3">
+            <label class="form-label">Current Avatar</label>
+            <div class="d-flex align-items-center">
+                <img src="{% if form.instance.avatar %}{{ form.instance.avatar.url }}{% else %}{% static 'images/avatar.png' %}{% endif %}" 
+                     class="rounded-circle me-3" width="100" height="100">
+                {{ form.avatar }}
+                {% if form.avatar.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.avatar.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="mt-5">  
+            <button type="submit" class="btn btn-outline-success px-4">Save</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
