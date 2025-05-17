@@ -9,18 +9,25 @@
                          class="rounded-circle {% if answer %}answer-avatar{% else %}user-avatar{% endif %} img-fluid" alt="img">
                 </div>
                 <div class="d-flex gap-2 {% if not centered %}ps-4{% else %}ps-2{% endif %} pt-3">
+                    
                     <div class="d-flex flex-column align-items-center">
-                        <button class="btn {% if small %}btn-sm{% endif %} btn-outline-success">
+                        <button class="like-btn btn {% if small %}btn-sm{% endif %} btn-outline-success {% if user_vote == True %}active{% endif %}" 
+                                data-question-id="{{ question.id }}"
+                                {% if not user.is_authenticated %}disabled{% endif %}>
                             <i class="bi bi-emoji-smile text-success"></i>
                         </button>
-                        <span id="likeCount" class="mt-1">{{ question.total_likes }}</span>
+                        <span class="like-count mt-1">{{ question.total_likes }}</span>
                     </div>
+                    
                     <div class="d-flex flex-column align-items-center">
-                        <button class="btn {% if small %}btn-sm{% endif %} btn-outline-danger">
+                        <button class="dislike-btn btn {% if small %}btn-sm{% endif %} btn-outline-danger {% if user_vote == False %}active{% endif %}" 
+                                data-question-id="{{ question.id }}"
+                                {% if not user.is_authenticated %}disabled{% endif %}>
                             <i class="bi bi-emoji-angry text-danger"></i>
                         </button>
-                        <span id="dislikeCount" class="mt-1">{{ question.total_dislikes }}</span>
+                        <span class="dislike-count mt-1">{{ question.total_dislikes }}</span>
                     </div>
+               
                 </div>
             </div>
             <div class="col d-flex flex-column justify-content-between">
@@ -63,3 +70,7 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/question_votes.js' %}"></script>
+<script src="{% static 'js/answer_votes.js' %}"></script>
