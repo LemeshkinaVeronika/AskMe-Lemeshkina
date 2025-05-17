@@ -32,6 +32,9 @@ urlpatterns = [
     path('profile/edit/', views.settings, name='settings'),
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
+    path('question/<int:question_id>/vote/', views.question_vote, name='question_vote'),
+    path('answer/<int:answer_id>/vote/', views.answer_vote, name='answer_vote'),
+    path('question/<int:question_id>/mark-correct/<int:answer_id>/', views.mark_correct_answer, name='mark_correct_answer'),
 ]
 
 if settings.DEBUG:
