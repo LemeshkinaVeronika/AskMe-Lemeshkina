@@ -11,11 +11,11 @@
                         <i class="bi bi-fire text-custom"></i>
                     </div>
 
-                    <article class="d-flex gap-3 flex-column">
+                   <article class="d-flex gap-3 flex-column">
 
                         {%for question in questions %}
                         {% include 'layouts/question.html' with question=question %}
-                        {%endfor%}
+                        {%endfor %}
                         {% include 'layouts/pagination.html' %}
 
                     </article>
