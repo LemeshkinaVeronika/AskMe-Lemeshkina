@@ -58,7 +58,6 @@ def settings(request):
         request.FILES or None, 
         instance=request.user.profile
     )
-    
     response = form.handle_request(request) if request.method == 'POST' else None
     return response or render(request, 'settings.html', {'form': form})
 

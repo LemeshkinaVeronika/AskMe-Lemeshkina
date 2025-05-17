@@ -35,7 +35,7 @@
                 
                 <div class="d-flex gap-4 align-items-center profile ms-5">
                 <div>
-                    <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'images/avatar.png' %}{% endif %}" 
+                    <img src="{{ user.profile.get_avatar_url }}"
                          class="rounded-circle avatar" alt="Profile avatar">
                 </div>
                 <div class="content text-white">

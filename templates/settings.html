@@ -32,7 +32,7 @@
         <div class="mb-3">
             <label class="form-label">Current Avatar</label>
             <div class="d-flex align-items-center">
-                <img src="{% if form.instance.avatar %}{{ form.instance.avatar.url }}{% else %}{% static 'images/avatar.png' %}{% endif %}" 
+                <img src="{{ form.instance.get_avatar_url }}"
                      class="rounded-circle me-3" width="100" height="100">
                 {{ form.avatar }}
                 {% if form.avatar.errors %}

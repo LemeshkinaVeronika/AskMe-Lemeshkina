@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
 
 # Create your models here.
 class QuestionManager(models.Manager):
@@ -23,6 +24,10 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     nickname = models.CharField(max_length=30, blank=True)
+    def get_avatar_url(self):
+        if self.avatar:
+            return self.avatar.url  
+        return f"{settings.MEDIA_URL}avatars/avatar.png" 
     def __str__(self):
         return self.user.username
 
