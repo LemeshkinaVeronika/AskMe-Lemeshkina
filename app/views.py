@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-from .forms import AskQuestionForm, AnswerForm, LoginForm, SignUpForm, ProfileEditForm
+from .forms import AskQuestionForm, AnswerForm, LoginForm, SignUpForm, ProfileEditForm 
 
 
 # Create your views here.
@@ -115,3 +115,4 @@ def answer_vote(request, answer_id):
 def mark_correct_answer(request, question_id, answer_id):
     result, status = handle_correct_answer(request, question_id, answer_id)
     return JsonResponse(result, status=status)
+
